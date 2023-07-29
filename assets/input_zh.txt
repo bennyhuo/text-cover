@@ -1,0 +1,2 @@
+为什么<font size='150' color='#FF0000' background='#00FFFF' weight='bold' family='kaiti'>你</font>需要
+学习<font size='150' color='#FF0000' background='#00FFFF' style='italic' family='Times New Roman'>Rust</font>？
