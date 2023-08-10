@@ -73,19 +73,23 @@ pub struct FontId {
     pub weight: Weight,
 }
 
+fn find_value<'a>(values: &'a Vec<String>, candidates: &[&str]) -> Option<&'a String> {
+    if let [first, tail @ ..] = candidates {
+        values
+            .iter()
+            .find(|value| value.to_lowercase().contains(first))
+            .map_or_else(|| find_value(values, tail), |v| Some(v))
+    } else {
+        None
+    }
+}
+
 impl Default for FontId {
     fn default() -> Self {
         let source = SystemSource::new();
         let font_families = source.all_families().expect("No fonts in the System.");
-        let default_family = font_families
-            .iter()
-            .find(|value| {
-                let lowercase_name = value.to_ascii_lowercase();
-                lowercase_name.contains("yahei")
-                    || lowercase_name.contains("heiti")
-                    || lowercase_name.contains("songti")
-                    || lowercase_name.contains("kaiti")
-            })
+
+        let default_family = find_value(&font_families, &["yahei", "heiti", "songti", "kaiti"])
             .expect("No preferred default font found. Please specify the font-family explicitly.");
 
         FontId {
