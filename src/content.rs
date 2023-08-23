@@ -1,22 +1,18 @@
 use std::fs;
 
 use html_parser::{Dom, Element, Node};
-use imageproc::rect::Rect;
 
 use crate::font::FontLoader;
 use crate::line::LineInfo;
-use crate::param::ImageCanvas;
 use crate::text::{Alignment, Text};
 
-const LINE_SPACING: f32 = 1.5f32;
-
-pub struct Input<'a> {
+pub struct Content<'a> {
     pub lines: Vec<LineInfo<'a>>,
 }
 
-impl<'a> Input<'a> {
-    pub fn new() -> Input<'a> {
-        Input {
+impl<'a> Content<'a> {
+    pub fn new() -> Content<'a> {
+        Content {
             lines: vec![LineInfo::new()],
         }
     }
@@ -29,32 +25,10 @@ impl<'a> Input<'a> {
         self.lines.len()
     }
 
-    pub fn content_height(&self) -> u32 {
+    pub fn content_height(&self, line_spacing: f32) -> u32 {
         self.lines.iter().fold(0f32, |value, line| {
-            line.line_height(LINE_SPACING) as f32 + value
+            line.line_height(line_spacing) as f32 + value
         }) as u32
-    }
-
-    pub fn draw(&self, canvas: &mut ImageCanvas, content_rect: Rect) {
-        let content_height = self.content_height();
-
-        let mut start_y = (canvas.height() - content_height) / 2;
-
-        self.lines
-            .iter()
-            .filter(|line| !line.is_empty())
-            .for_each(|line| {
-                line.draw(
-                    canvas,
-                    Rect::at(
-                        content_rect.left(),
-                        (start_y + (line.line_height(LINE_SPACING - 1f32)) / 2) as i32,
-                    )
-                    .of_size(content_rect.width(), line.line_height(1f32)),
-                );
-
-                start_y += line.line_height(LINE_SPACING);
-            });
     }
 
     pub fn push_text(&mut self, text: Text<'a>) {

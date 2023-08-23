@@ -2,9 +2,6 @@ use std::fmt::Debug;
 
 use clap::Parser;
 use csscolorparser::Color;
-use image::{ImageBuffer, Rgba};
-
-pub type ImageCanvas = ImageBuffer<Rgba<u8>, Vec<u8>>;
 
 #[derive(Parser, Debug)]
 pub struct Parameter {
