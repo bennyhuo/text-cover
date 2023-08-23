@@ -1,5 +1,7 @@
 # Text Cover
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A very small cli tool written in Rust to convert a piece of text to image. 
 
 This is mainly designed to use the text image as a video cover.
